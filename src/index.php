@@ -9,13 +9,13 @@
  		}
  	</style>
  </head>
- 
+
  <body>
  	<h1>PDO vulnerable a SQL injection</h1>
- 
+
  	<?php
  		// sql injection possible:
- 		// coses'); drop table test;'select 
+ 		// coses'); drop table test;'select
 		if( isset($_POST["user"])) {
 
 			$dbhost = $_ENV["DB_HOST"];
@@ -25,19 +25,21 @@
 
 			# Connectem a MySQL (host,usuari,contrassenya)
 			$pdo = new PDO("mysql:host=$dbhost;dbname=$dbname",$dbuser,$dbpass);
-	 
+
 			$username = $_POST["user"];
-			$pass = $_POST["password"];
+			$password = $_POST["password"];
 			# (2.1) creem el string de la consulta (query)
-			$qstr = "SELECT * FROM users WHERE name='$username' AND password=SHA2('$pass',512);";
+			$qstr = "SELECT * FROM users WHERE name='$username' AND password=SHA2('$password',512);";
 			$consulta = $pdo->prepare($qstr);
+//			$consulta->bindParam(':username', $username);
+//			$consulta->bindParam(':password', $password);
 
 			# mostrem la SQL query per veure el què s'executarà (a mode debug)
 			echo "<br>$qstr<br>";
 
 			# Enviem la query al SGBD per obtenir el resultat
 			$consulta->execute();
-	 
+
 			# Gestió d'errors
 			if( $consulta->errorInfo()[1] ) {
 				echo "<p>ERROR: ".$consulta->errorInfo()[2]."</p>\n";
@@ -53,7 +55,7 @@
 				echo "<div class='user'>No hi ha cap usuari amb aquest nom o contrasenya.</div>";
 		}
  	?>
- 	
+
  	<fieldset>
  	<legend>Login form</legend>
   	<form method="post">
@@ -62,7 +64,7 @@
 		<input type="submit" /><br>
  	</form>
   	</fieldset>
-	
+
  </body>
- 
+
  </html>

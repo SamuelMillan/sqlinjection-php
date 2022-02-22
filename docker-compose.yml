@@ -5,7 +5,7 @@ services:
   webapp:
     build: .
     ports:
-      - 8000:80
+      - 8047:80
     environment:
       DB_HOST: db
       DB_NAME: sqlidb
