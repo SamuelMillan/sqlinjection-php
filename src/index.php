@@ -29,10 +29,10 @@
 			$username = $_POST["user"];
 			$password = $_POST["password"];
 			# (2.1) creem el string de la consulta (query)
-			$qstr = "SELECT * FROM users WHERE name='$username' AND password=SHA2('$password',512);";
+			$qstr = "SELECT * FROM users WHERE name=:username AND password=SHA2(:password,512);";
 			$consulta = $pdo->prepare($qstr);
-//			$consulta->bindParam(':username', $username);
-//			$consulta->bindParam(':password', $password);
+               		$consulta->bindParam(':username', $username);
+        		$consulta->bindParam(':password', $password);
 
 			# mostrem la SQL query per veure el què s'executarà (a mode debug)
 			echo "<br>$qstr<br>";
